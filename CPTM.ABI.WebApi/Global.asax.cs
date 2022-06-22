@@ -18,6 +18,23 @@ namespace CPTM.ABI.WebApi
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            // Habilita a minificação dos JS e CSS
+            BundleTable.EnableOptimizations = true;
+        }
+
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+            if (Context.Request.HttpMethod != "OPTIONS") return;
+            if (Context.Request.Headers["Origin"] != null)
+                Context.Response.AddHeader("Access-Control-Allow-Origin", Context.Request.Headers["Origin"]);
+
+            Context.Response.AddHeader("Access-Control-Allow-Headers",
+                "Origin,X-Requested-With,Content-Type,Accept,Authorization");
+            Context.Response.AddHeader("Access-Control-Allow-Methods", "*");
+            Context.Response.AddHeader("Access-Control-Allow-Credentials", "true");
+
+            Response.End();
         }
     }
 }
