@@ -18,7 +18,7 @@ namespace CPTM.ABI.WebApi.Controllers.API
         public HttpResponseMessage ObterUsuario([FromUri] string username)
         {
             var usuarioAd = Seguranca.ObterUsuario(username);
-            return Request.CreateResponse(HttpStatusCode.OK, new { message = "oi", usuarioAd });
+            return Request.CreateResponse(HttpStatusCode.OK, new { usuarioAd });
         }
 
         [Route("autenticar")]
@@ -27,7 +27,7 @@ namespace CPTM.ABI.WebApi.Controllers.API
         public HttpResponseMessage Autenticar([FromBody] AuthUser authUser)
         {
             var autenticado = Seguranca.Autenticar(authUser.username, authUser.password);
-            return Request.CreateResponse(HttpStatusCode.OK, new { message = "oi2", autenticado });
+            return Request.CreateResponse(HttpStatusCode.OK, new { autenticado });
         }
     }
 }

@@ -23,7 +23,7 @@ namespace CPTM.ABI.WebApi.Controllers.API
                 emailArgs.Destinatarios, emailArgs.Assunto, emailArgs.Mensagem, emailArgs.EnviarEm,
                 emailArgs.IdUsuarioCpu, ref erro);
 
-            return Request.CreateResponse(HttpStatusCode.OK, new { message = "oi", enviado });
+            return Request.CreateResponse(HttpStatusCode.OK, new { enviado });
         }
     }
 }

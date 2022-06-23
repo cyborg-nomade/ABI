@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 using System.Web.Http.Cors;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json;
@@ -16,23 +17,13 @@ namespace CPTM.ABI.WebApi
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
-            config.SuppressDefaultHostAuthentication();
-            config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
-            var corsAttr = new EnableCorsAttribute("*",
-                "Origin,X-Requested-With,Content-Type,Accept,Authorization", "*") { SupportsCredentials = true };
-            config.EnableCors(corsAttr);
+            config.Filters.Add(new LocalRequestOnlyAttribute());
 
             // Web API routes
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(name: "ActionApi", routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional });
-
-            //config.Routes.MapHttpRoute(
-            //    name: "DefaultApi",
-            //    routeTemplate: "api/{controller}/{id}",
-            //    defaults: new { id = RouteParameter.Optional }
-            //);
 
             // JSON Formatter
             var json = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
@@ -58,6 +49,14 @@ namespace CPTM.ABI.WebApi
             {
                 base.SetDefaultContentHeaders(type, headers, mediaType);
                 headers.ContentType = new MediaTypeHeaderValue("application/json");
+            }
+        }
+
+        public class LocalRequestOnlyAttribute : AuthorizeAttribute
+        {
+            protected override bool IsAuthorized(HttpActionContext context)
+            {
+                return context.RequestContext.IsLocal;
             }
         }
     }
