@@ -15,15 +15,28 @@ namespace CPTM.ABI.WebApi.Controllers.API
     {
         [Route("enviar")]
         [AllowAnonymous]
-        [HttpGet]
-        public HttpResponseMessage ObterUsuario([FromUri] EmailArgs emailArgs)
+        [HttpPost]
+        public HttpResponseMessage EnviarEmail([FromBody] EmailArgs emailArgs)
         {
             var erro = emailArgs.MensagemErro;
             var enviado = Email.Enviar(emailArgs.SistemaSigla, emailArgs.RementeNome, emailArgs.RemetenteEmail,
                 emailArgs.Destinatarios, emailArgs.Assunto, emailArgs.Mensagem, emailArgs.EnviarEm,
                 emailArgs.IdUsuarioCpu, ref erro);
 
-            return Request.CreateResponse(HttpStatusCode.OK, new { enviado });
+            return Request.CreateResponse(HttpStatusCode.OK, new { enviado, erro });
+        }
+
+        [Route("enviar-anexo")]
+        [AllowAnonymous]
+        [HttpPost]
+        public HttpResponseMessage EnviarEmailComAnexo([FromBody] EmailArgs emailArgs)
+        {
+            var erro = emailArgs.MensagemErro;
+            var enviado = Email.Enviar(emailArgs.SistemaSigla, emailArgs.RementeNome, emailArgs.RemetenteEmail,
+                emailArgs.Destinatarios, emailArgs.Assunto, emailArgs.Mensagem, emailArgs.Anexos, emailArgs.EnviarEm,
+                emailArgs.IdUsuarioCpu, ref erro);
+
+            return Request.CreateResponse(HttpStatusCode.OK, new { enviado, erro });
         }
     }
 }

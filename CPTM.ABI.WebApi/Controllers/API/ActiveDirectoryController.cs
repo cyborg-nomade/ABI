@@ -21,6 +21,15 @@ namespace CPTM.ABI.WebApi.Controllers.API
             return Request.CreateResponse(HttpStatusCode.OK, new { usuarioAd });
         }
 
+        [Route("existe-usuario/{username}")]
+        [AllowAnonymous]
+        [HttpGet]
+        public HttpResponseMessage ExisteUsuario([FromUri] string username)
+        {
+            var existe = Seguranca.Existe(username);
+            return Request.CreateResponse(HttpStatusCode.OK, new { existe });
+        }
+
         [Route("autenticar")]
         [AllowAnonymous]
         [HttpPost]

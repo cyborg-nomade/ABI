@@ -14,5 +14,6 @@ namespace CPTM.ABI.WebApi.Models
         public DateTime EnviarEm { get; set; }
         public int IdUsuarioCpu { get; set; }
         public string MensagemErro { get; set; }
+        public Dictionary<string, byte[]> Anexos { get; set; }
     }
 }
