@@ -17,8 +17,17 @@ namespace CPTM.ABI.WebApi.Controllers.API
         [HttpGet]
         public HttpResponseMessage ObterUsuario([FromUri] string username)
         {
-            var usuarioAd = Seguranca.ObterUsuario(username);
+            var usuarioAd = Seguranca.ObterUsuario(username.ToUpper());
             return Request.CreateResponse(HttpStatusCode.OK, new { usuarioAd });
+        }
+
+        [Route("obter-grupo/{groupname}")]
+        [AllowAnonymous]
+        [HttpGet]
+        public HttpResponseMessage ObterGroup([FromUri] string groupname)
+        {
+            var grupoAd = Seguranca.ObterGrupo(groupname.ToUpper());
+            return Request.CreateResponse(HttpStatusCode.OK, new { grupoAd });
         }
 
         [Route("existe-usuario/{username}")]
@@ -26,7 +35,7 @@ namespace CPTM.ABI.WebApi.Controllers.API
         [HttpGet]
         public HttpResponseMessage ExisteUsuario([FromUri] string username)
         {
-            var existe = Seguranca.Existe(username);
+            var existe = Seguranca.ExisteUsuario(username.ToUpper());
             return Request.CreateResponse(HttpStatusCode.OK, new { existe });
         }
 
@@ -35,7 +44,7 @@ namespace CPTM.ABI.WebApi.Controllers.API
         [HttpPost]
         public HttpResponseMessage Autenticar([FromBody] AuthUser authUser)
         {
-            var autenticado = Seguranca.Autenticar(authUser.username, authUser.password);
+            var autenticado = Seguranca.Autenticar(authUser.username.ToUpper(), authUser.password);
             return Request.CreateResponse(HttpStatusCode.OK, new { autenticado });
         }
     }
